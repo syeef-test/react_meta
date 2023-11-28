@@ -24,16 +24,17 @@ const data = [
   },
 ];
 
-const topDesserts = data.map((dessert) => {
-  return {
-    content: `${dessert.title} - ${dessert.description}`,
-    price: dessert.price,
-  };
-});
-
 function App() {
-  console.log(topDesserts);
-  return <h1>Little Lemon</h1>;
+  const listItems = data.map((dessert) => {
+    const itemText = `${dessert.title} - ${dessert.price}`;
+    return <li>{itemText}</li>;
+  });
+
+  return (
+    <div>
+      <ul>{listItems}</ul>
+    </div>
+  );
 }
 
 export default App;
