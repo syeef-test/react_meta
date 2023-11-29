@@ -2,15 +2,31 @@ import "./App.css";
 import { useState } from "react";
 
 function App() {
+  const [name, setName] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setName("");
+    console.log("Form Submited");
+  };
   return (
     <div className="App">
-      <form>
+      <form onSubmit={handleSubmit}>
         <fieldset>
           <div className="Field">
-            <label>Name:</label>
-            <input type="text" placeholder="Name" name="name" />
+            <label htmlFor="name">Name:</label>
+            <input
+              id="name"
+              type="text"
+              placeholder="Name"
+              name="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
           </div>
-          <button type="submit">Submit</button>
+          <button disabled={!name} type="submit">
+            Submit
+          </button>
         </fieldset>
       </form>
     </div>
