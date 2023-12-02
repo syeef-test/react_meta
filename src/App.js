@@ -1,19 +1,36 @@
 import React from "react";
 import "./App.css";
 
-function App() {
-  const formInputRef = React.useRef(null);
+const Button = ({ children, backgroundColor }) => {
+  return <button style={{ backgroundColor }}>{children}</button>;
+};
 
-  const focusInput = () => {
-    formInputRef.current.focus();
-  };
-
+const Alert = ({ children }) => {
   return (
     <>
-      <h1>Using useRef to access underlying DOM</h1>
-      <input ref={formInputRef} type="text" />
-      <button onClick={focusInput}>Focus Input</button>
+      <div className="Overlay" />
+      <div className="Alert">{children}</div>
     </>
+  );
+};
+
+const DeleteButton = () => {
+  return <Button backgroundColor="red">Delete</Button>;
+};
+
+function App() {
+  return (
+    <div className="App">
+      <header>Little Lemon Resturent</header>
+      <Alert>
+        <h4>Delete Account</h4>
+        <p>
+          Are you sure want to proceed? You will miss all your delicious
+          recipes!
+        </p>
+        <DeleteButton />
+      </Alert>
+    </div>
   );
 }
 
