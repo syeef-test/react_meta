@@ -1,37 +1,37 @@
 import React from "react";
 import "./App.css";
 
-const Button = ({ children, backgroundColor }) => {
-  return <button style={{ backgroundColor }}>{children}</button>;
-};
+const Row = ({ children, spacing }) => {
+  const childStyle = {
+    marginLeft: `${spacing}px`,
+  };
 
-const Alert = ({ children }) => {
   return (
-    <>
-      <div className="Overlay" />
-      <div className="Alert">{children}</div>
-    </>
+    <div className="Row">
+      {React.Children.map(children, (child, index) => {
+        return React.cloneElement(child, {
+          style: {
+            ...child.props.style,
+            ...(index > 0 ? childStyle : {}),
+          },
+        });
+      })}
+    </div>
   );
 };
 
-const DeleteButton = () => {
-  return <Button backgroundColor="red">Delete</Button>;
-};
-
-function App() {
+function LiveOrders() {
   return (
     <div className="App">
-      <header>Little Lemon Resturent</header>
-      <Alert>
-        <h4>Delete Account</h4>
-        <p>
-          Are you sure want to proceed? You will miss all your delicious
-          recipes!
-        </p>
-        <DeleteButton />
-      </Alert>
+      <Row spacing={32}>
+        <p>Pizza Margarita</p>
+        <p>2</p>
+        <p>30$</p>
+        <p>18.30</p>
+        <p>John</p>
+      </Row>
     </div>
   );
 }
 
-export default App;
+export default LiveOrders;
