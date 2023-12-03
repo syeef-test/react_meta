@@ -1,37 +1,68 @@
 import React from "react";
 import "./App.css";
+import { useState, useEffect } from "react";
 
-const Button = ({ type, children, ...buttonProps }) => {
-  const className = type === "primary" ? "PrimaryButton" : "SecondaryButton";
+const withMousePosition = (WrappedComponent) => {
+  return (props) => {
+    const [mousePosition, setMousePosition] = useState({
+      x: 0,
+      y: 0,
+    });
+
+    useEffect(() => {
+      const handleMousePositionChange = (e) => {
+        setMousePosition({
+          x: e.clientX,
+          y: e.clientY,
+        });
+      };
+      window.addEventListener("mousemove", handleMousePositionChange);
+      return () => {
+        window.removeEventListener("mousemove", handleMousePositionChange);
+      };
+    }, []);
+
+    return <WrappedComponent {...props} mousePosition={mousePosition} />;
+  };
+};
+
+const PanelMouseLogger = ({ mousePosition }) => {
+  if (!mousePosition) {
+    return null;
+  }
+
   return (
-    <button className={`Button ${className}`} {...buttonProps}>
-      {children}
-    </button>
+    <div className="BasicTracker">
+      <p>Mouse position</p>
+      <div className="Row">
+        <span>x:{mousePosition.x}</span>
+        <span>y:{mousePosition.y}</span>
+      </div>
+    </div>
   );
 };
 
-const LoginButton = ({ type, children, ...buttonProps }) => {
+const PointMouseLogger = ({ mousePosition }) => {
+  if (!mousePosition) {
+    return null;
+  }
+
   return (
-    <Button
-      type="secondary"
-      {...buttonProps}
-      onClick={() => alert("Logging in!")}
-    >
-      {children}
-    </Button>
+    <p>
+      ({mousePosition.x},{mousePosition.y})
+    </p>
   );
 };
+
+const PanelMouseTracker = withMousePosition(PanelMouseLogger);
+const PointMouseTracker = withMousePosition(PointMouseLogger);
 
 function App() {
   return (
     <div className="App">
       <header className="Header">Little Lemon Restaurant</header>
-      <Button type="primary" onClick={() => alert("Signing up!")}>
-        Sign up
-      </Button>
-      <LoginButton type="secondary" onClick={() => alert("Logging in!")}>
-        Login
-      </LoginButton>
+      <PanelMouseTracker />
+      <PointMouseTracker />
     </div>
   );
 }
